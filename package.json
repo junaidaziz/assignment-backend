@@ -1,0 +1,19 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "Assignment",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node ./index.js",
+    "lint": "eslint src/js"
+  },
+  "author": "junaid aziz",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.16.3"
+  },
+  "devDependencies": {
+    "eslint": "^5.6.0"
+  }
+}
