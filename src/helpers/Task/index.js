@@ -9,7 +9,7 @@ const {
 const taskHelpers = {}
 
 taskHelpers.createTask = (...props) => {
-  return Task.findOne(...props)
+  return Task.create(...props)
 }
 
 module.exports = taskHelpers
