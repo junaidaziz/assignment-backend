@@ -11,7 +11,11 @@
   "author": "junaid aziz",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.16.3"
+    "express": "^4.16.3",
+    "pg": "^7.4.3",
+    "pg-parse-float": "0.0.1",
+    "sequelize": "^4.38.1",
+    "sequelize-cli": "^4.1.1"
   },
   "devDependencies": {
     "eslint": "^5.6.0"
