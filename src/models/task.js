@@ -3,8 +3,11 @@ module.exports = (sequelize, DataTypes) => {
   var Task = sequelize.define('Task', {
     title: DataTypes.STRING,
     description: DataTypes.TEXT,
-    priority: DataTypes.STRING,
     status: DataTypes.STRING,
+    PriorityId: {
+      type: DataTypes.INTEGER,
+      field: 'priority_id'
+    },
     dueDate: {
       type: DataTypes.DATEONLY,
       field: 'due_date'
@@ -18,7 +21,7 @@ module.exports = (sequelize, DataTypes) => {
     tableName: 'tasks'
   });
   Task.associate = function(models) {
-    // associations can be defined here
+    Task.belongsTo(models.Priority)
   };
   return Task;
 };

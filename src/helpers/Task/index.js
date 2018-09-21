@@ -3,7 +3,8 @@ const models = require(`${AppRoot}/src/models`)
 
 const {
   Task,
-  sequelize
+  Priority,
+  sequelize,
 } = models
 
 const taskHelpers = {}
@@ -12,15 +13,36 @@ taskHelpers.createTask = (...props) => {
   return Task.create(...props)
 }
 
-taskHelpers.getTask = (whereCondition) => {
+taskHelpers.fetchAllTasks = (whereCondition) => {
   return Task.findAll({
-    where: whereCondition
+    where: whereCondition,
+    include: [
+      {
+        model: Priority,
+        attributes: ['id', 'name']
+      }
+    ],
+    order: [
+      ["dueDate", "ASC"],
+      ["PriorityId", "ASC"]
+    ]
   })
 }
 
-taskHelpers.findOneTask = (whereCondition) => {
+taskHelpers.fetchTaskDetail = (whereCondition) => {
   return Task.findOne({
-    where: whereCondition
+    where: whereCondition,
+    include: [
+      {
+        model: Priority,
+        attributes: ['id', 'name']
+      }
+    ],
+    order: [["PriorityId", "ASC"]]
+  }).then(task => {
+    if (!task)
+      return null
+    else return task
   })
 }
 
@@ -30,13 +52,15 @@ taskHelpers.updateTask = async (params, taskId) => {
       id: taskId
     }
   })
+  if (!task)
+    return false
 
-  params = await taskHelpers.mapTaskParams(params, Object.keys(task.dataValues))
-  task.update(params)
+  await task.update(params)
+  return task
 }
 
 taskHelpers.pluckTaskKeys = async (params) => {
-  const task = await Task.findOne()
+  const task = await Task.findOne({})
   const taskFields = Object.keys(task.dataValues)
   return taskFields
 }
@@ -46,11 +70,17 @@ taskHelpers.mapTaskParams = (params, taskFields) => {
   const taskParams = {}
   const newKeys = Object.keys(params)
 
-  newKeys.forEach(key => {
-    if (taskFields.includes(key))
+  taskFields.forEach(key => {
+    if (newKeys.includes(key))
       taskParams[key] = params[key]
   })
   return taskParams
+}
+
+taskHelpers.deleteTask = (whereCondition) => {
+  return Task.destroy({
+    where: whereCondition
+  })
 }
 
 module.exports = taskHelpers

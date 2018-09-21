@@ -6,7 +6,7 @@ const cron = require('node-cron')
 const AppRoot = require('app-root-path')
 
 const {randomTask} = require(`${AppRoot}/src/scripts`)
-const createRandomTask = cron.schedule('0 */01 * * * *', () => {
+const createRandomTask = cron.schedule('0 */01 */04 * * *', () => {
   randomTask.createTask()
 }, false)
 
