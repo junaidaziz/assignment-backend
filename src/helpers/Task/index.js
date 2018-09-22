@@ -23,10 +23,19 @@ taskHelpers.fetchAllTasks = (whereCondition) => {
       }
     ],
     order: [
+      ["PriorityId", "ASC"],
       ["dueDate", "ASC"],
-      ["PriorityId", "ASC"]
-    ]
+    ],
+    attributes: ['id', 'title', 'description', 'dueDate', 'status', 'PriorityId']
   })
+}
+
+taskHelpers.fetchPriorities = (whereCondition) => {
+  return Priority.findAll(
+    {
+      attributes: ['id', 'name']
+    }
+  )
 }
 
 taskHelpers.fetchTaskDetail = (whereCondition) => {
@@ -38,7 +47,10 @@ taskHelpers.fetchTaskDetail = (whereCondition) => {
         attributes: ['id', 'name']
       }
     ],
-    order: [["PriorityId", "ASC"]]
+    order: [
+      ["PriorityId", "ASC"],
+      ["dueDate", "ASC"],
+    ]
   }).then(task => {
     if (!task)
       return null

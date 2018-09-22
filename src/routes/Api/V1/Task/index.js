@@ -3,6 +3,16 @@ const router = express.Router()
 const AppRoot = require('app-root-path')
 const {taskHelpers} = require(`${AppRoot}/src/helpers`)
 
+router.get('/priorities', async (req, res, next) => {
+
+  const priorities = await taskHelpers.fetchPriorities()
+
+  res.json({
+    success: true,
+    priorities: priorities
+  })
+})
+
 router.get('/', async (req, res, next) => {
   const tasks = await taskHelpers.fetchAllTasks()
   res.json({
@@ -11,9 +21,13 @@ router.get('/', async (req, res, next) => {
   })
 })
 
+
 router.get('/:id', async (req, res, next) => {
+
   const taksDetail = await taskHelpers.fetchTaskDetail({id: req.params.id})
+
   const result = {}
+
   if (!taksDetail){
     result['success'] = false
     result['message'] = 'No Task found'
